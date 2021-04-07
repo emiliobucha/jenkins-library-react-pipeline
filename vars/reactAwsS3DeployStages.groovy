@@ -1,9 +1,4 @@
-def call(body) {
-
-    def config = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
-    body()
+def call(config) {
 
     stage('Upload Artifact to S3 Bucket') {
         steps {
