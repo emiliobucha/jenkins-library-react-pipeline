@@ -59,7 +59,7 @@ def call(body) {
             }
             stage('reused'){
                 steps{
-                                reactAwsS3Pipeline(config)
+                                reactAwsS3Pipeline()
 
                 }
             }
