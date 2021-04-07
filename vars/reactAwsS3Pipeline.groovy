@@ -57,7 +57,12 @@ def call(body) {
                     zip archive: true, glob: 'build/*.*', zipFile: "${config.artifact}", overwrite: true
                 }
             }
-            reactAwsS3Pipeline(config)
+            stage('reused'){
+                steps{
+                                reactAwsS3Pipeline(config)
+
+                }
+            }
         }
     }
 }
