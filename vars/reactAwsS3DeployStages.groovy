@@ -1,4 +1,4 @@
-def reactAwsS3DeployStages(Map config) {
+def call(Map config) {
 
     stage('Upload Artifact to S3 Bucket') {
         steps {
