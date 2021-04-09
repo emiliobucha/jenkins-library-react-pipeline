@@ -1,4 +1,4 @@
-def call(def ) {
+def call() {
     def packageJSON = readJSON file: 'package.json'
     def packageJSONVersion = packageJSON.version
     devTag  = "${packageJSONVersion}-" + currentBuild.number
