@@ -55,7 +55,9 @@ def call(body) {
             }
             stage('Upload Artifact to S3 Bucket') {
                 steps {
-                    awsS3Upload.upload artifact: config.artifact, s3Artifact:config.s3Artifact, credentials: config.awsCredentials, region: config.awsRegion
+                    script{
+                        awsS3Upload.upload artifact: config.artifact, s3Artifact:config.s3Artifact, credentials: config.awsCredentials, region: config.awsRegion
+                    }
                 }
             }
             stage('Deploy Artifact to S3 Bucket') {
