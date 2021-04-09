@@ -62,20 +62,9 @@ def call(body) {
             }
             stage('Deploy Artifact to S3 Bucket') {
                 steps {
-                    input "Deploy Artifact ${config.artifact} to S3 Bucket ${config.s3Artifact}?"
-                    println artifact
-                    println s3Artifact
-                    withAWS(credentials: "${config.awsCredentials}", region: "${config.awsRegion}") {
-                        dir("build") {
-                            script {
-                                files = findFiles(glob: '**')
-                                files.each { 
-                                    println "File:  ${it}"
-                                    s3Upload(file:"${it}", bucket:"${config.s3Artifact}", path:"${it}")
-                                }
-                            }
-                        }
-                    }
+                   script{
+                       awsS3Upload.upload(config.buildFolder, config.s3Artifact, config.awsCredentials, config.awsRegion)
+                   }
                 }
             }
             stage('Check Application is Up and Running') {
