@@ -9,7 +9,6 @@ def upload(def artifact, def s3Artifact, def credentials, def region) {
 
 def uploadFolder(def folder, def s3Artifact, def credentials, def region) {
     input "Deploy Artifact folder ${folder} to S3 Bucket ${s3Artifact}?"
-    println artifact
     println s3Artifact
     withAWS(credentials: "${credentials}", region: "${region}") {
         dir("${folder}") {
