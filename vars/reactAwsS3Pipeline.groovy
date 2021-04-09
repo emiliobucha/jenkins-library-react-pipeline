@@ -53,20 +53,9 @@ def call(body) {
                     zip archive: true, glob: 'build/*.*', zipFile: "${config.artifact}", overwrite: true
                 }
             }
-            stage('reused'){
-                steps{
-                                reactAwsS3Pipeline()
-
-                }
-            }
             stage('Upload Artifact to S3 Bucket') {
                 steps {
-                    input "Upload Artifact ${config.artifact} to S3 Bucket ${config.s3Artifact}?"
-                    println artifact
-                    println s3Artifact
-                    withAWS(credentials: "${config.awsCredentials}", region: "${config.awsRegion}") {
-                        s3Upload(file:"${config.artifact}", bucket:"${config.s3Artifact}", path:"${config.artifact}")
-                    }
+                    awsS3Upload.upload artifact: config.artifact, s3Artifact:config.s3Artifact, credentials: config.awsCredentials, region: config.awsRegion
                 }
             }
             stage('Deploy Artifact to S3 Bucket') {
