@@ -53,17 +53,17 @@ def call(body) {
                     zip archive: true, glob: 'build/*.*', zipFile: "${config.artifact}", overwrite: true
                 }
             }
-            stage('Upload Artifact to S3 Bucket') {
-                steps {
-                    script{
-                        awsS3Upload.upload(config.artifact, config.s3Artifact, config.awsCredentials, config.awsRegion)
-                    }
-                }
-            }
+            // stage('Upload Artifact to S3 Bucket') {
+            //     steps {
+            //         script{
+            //             awsS3Upload.upload(config.artifact, config.s3Artifact, config.awsCredentials, config.awsRegion)
+            //         }
+            //     }
+            // }
             stage('Deploy Artifact to S3 Bucket') {
                 steps {
                    script{
-                       awsS3Upload.upload(config.buildFolder, config.s3Artifact, config.awsCredentials, config.awsRegion)
+                       awsS3Upload.uploadFolder(config.buildFolder, config.s3Artifact, config.awsCredentials, config.awsRegion)
                    }
                 }
             }
