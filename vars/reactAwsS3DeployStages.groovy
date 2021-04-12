@@ -1,5 +1,6 @@
 #!/usr/bin/env groovy
-def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials-jenkins']]
+def vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
+def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: vAWS_CREDENTIALS_ID]]
 pipeline {
     agent any
     
@@ -14,9 +15,16 @@ pipeline {
         string(defaultValue: 'build', description: 'Static website folder', name: 'BUILD_FOLDER')
         string(defaultValue: '', description: 'Website S3 Bucket.', name: 'S3_BUCKET')
         string(defaultValue: 'us-east-1', description: 'AWS region for the pipeline.', name: 'AWS_REGION')
-        string(defaultValue: awsCredentials, description: 'AWS credentials.', name: 'AWS_CREDENTIALS')
+        string(defaultValue: vAWS_CREDENTIALS_ID, description: 'AWS credentials id.', name: 'AWS_CREDENTIALS_ID')
     }
     stages{
+        stage('Initialize AWS Credentials'){
+            steps {
+                script {
+                    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS_ID]]
+                }
+            }
+        }
         stage('Deploy Artifact to S3 Bucket') {
                 steps {
                     script{

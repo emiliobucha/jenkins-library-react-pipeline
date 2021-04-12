@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
 def call(body) {
 
-    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials-jenkins']]
 
     def config = [:]
     config['GIT_CREDENTIALS'] = 'gitlab-semperti-gonzalo-acosta'
@@ -13,21 +12,23 @@ def call(body) {
     config['BUILD_FOLDER'] = "code/frontend/build"
     config['SOURCE_FRONTEND'] = "code/frontend"
 
-
-    def vGIT_CREDENTIALS = env.GIT_CREDENTIALS == null ? config['GIT_CREDENTIALS'] : env.GIT_CREDENTIALS,
-        vPIPELINE_LIBRARY_REPOSITORY = env.PIPELINE_LIBRARY_REPOSITORY == null ? config['PIPELINE_LIBRARY_REPOSITORY'] : env.PIPELINE_LIBRARY_REPOSITORY,
-        vNPM_CMD = env.NPM_CMD == null ? config['NPM_CMD'] : env.NPM_CMD,
-        vENVIRONMENT = env.ENVIRONMENT == null ? config['ENVIRONMENT'] : env.ENVIRONMENT,
-        vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION,
-        vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
-        vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
-        vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
-        vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.SOURCE_FRONTEND,
-        vAWS_CREDENTIALS = config['AWS_CREDENTIALS'] == null ? awsCredentials : config['AWS_CREDENTIALS']
-
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
+
+    def vGIT_CREDENTIALS = env.GIT_CREDENTIALS == null ? config['GIT_CREDENTIALS'] : env.GIT_CREDENTIALS,
+            vPIPELINE_LIBRARY_REPOSITORY = env.PIPELINE_LIBRARY_REPOSITORY == null ? config['PIPELINE_LIBRARY_REPOSITORY'] : env.PIPELINE_LIBRARY_REPOSITORY,
+            vNPM_CMD = env.NPM_CMD == null ? config['NPM_CMD'] : env.NPM_CMD,
+            vENVIRONMENT = env.ENVIRONMENT == null ? config['ENVIRONMENT'] : env.ENVIRONMENT,
+            vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION,
+            vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
+            vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
+            vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
+            vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.SOURCE_FRONTEND,
+            vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
+
+    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: vAWS_CREDENTIALS_ID]]
+
 
     pipeline {
         agent any
@@ -106,7 +107,7 @@ def call(body) {
                         string(name: 'AWS_REGION', value: params.AWS_REGION),
                         string(name: 'BUILD_FOLDER', value: params.BUILD_FOLDER),
                         string(name: 'S3_BUCKET', value: params.S3_BUCKET),
-                        string(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS)
+                        string(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS_ID)
                     ], wait: false
                 }
             }
