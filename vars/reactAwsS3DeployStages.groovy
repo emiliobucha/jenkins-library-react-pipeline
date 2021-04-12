@@ -16,7 +16,7 @@ pipeline {
         string(defaultValue: '', description: 'Website S3 Bucket.', name: 'S3_BUCKET')
         string(defaultValue: 'us-east-1', description: 'AWS region for the pipeline.', name: 'AWS_REGION')
         credentials(defaultValue: awsCredentialsId, description: 'AWS credentials', name: 'AWS_CREDENTIALS')
-        ws(defaultValue: '', description: 'Builds workspace', name: 'WS_PATH')
+        string(defaultValue: '', description: 'Builds workspace', name: 'WS_PATH')
     }
     stages{
 
