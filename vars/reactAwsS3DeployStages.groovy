@@ -15,13 +15,13 @@ pipeline {
         string(defaultValue: 'build', description: 'Static website folder', name: 'BUILD_FOLDER')
         string(defaultValue: '', description: 'Website S3 Bucket.', name: 'S3_BUCKET')
         string(defaultValue: 'us-east-1', description: 'AWS region for the pipeline.', name: 'AWS_REGION')
-        string(defaultValue: vAWS_CREDENTIALS_ID, description: 'AWS credentials id.', name: 'AWS_CREDENTIALS_ID')
+        credentials(defaultValue: awsCredentials, description: 'AWS credentials id.', name: 'AWS_CREDENTIALS')
     }
     stages{
         stage('Initialize AWS Credentials'){
             steps {
                 script {
-                    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS_ID]]
+                    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
                 }
             }
         }

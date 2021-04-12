@@ -48,7 +48,7 @@ def call(body) {
             string(name: 'AWS_REGION', defaultValue: vAWS_REGION, description: 'AWS Region')
             string(name: 'DEPLOY_JOB', defaultValue: vDEPLOY_JOB, description: 'Deploy Pipeline Job')
             string(name: 'SOURCE_FRONTEND', defaultValue: vSOURCE_FRONTEND, description: 'Path relativo del código del frontend')
-
+            credentials(name: 'GIT_CREDENTIALS',  defaultValue: vGIT_CREDENTIALS, description: 'Credenciales para acceder a los repositorios.' )
         }
 
         stages {
