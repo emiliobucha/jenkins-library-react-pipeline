@@ -1,6 +1,4 @@
 #!/usr/bin/env groovy
-def vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
-def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: vAWS_CREDENTIALS_ID]]
 pipeline {
     agent any
     
@@ -21,7 +19,7 @@ pipeline {
         stage('Initialize AWS Credentials'){
             steps {
                 script {
-                    awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
+                    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
                 }
             }
         }
