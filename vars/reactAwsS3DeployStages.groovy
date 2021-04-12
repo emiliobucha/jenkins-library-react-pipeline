@@ -21,7 +21,7 @@ pipeline {
         stage('Initialize AWS Credentials'){
             steps {
                 script {
-                    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
+                    awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
                 }
             }
         }
