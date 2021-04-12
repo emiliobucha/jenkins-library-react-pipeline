@@ -11,6 +11,7 @@ def call(body) {
     config['S3_BUCKET'] = "semperti-react-development-rapientrega"
     config['BUILD_FOLDER'] = "code/frontend/build"
     config['SOURCE_FRONTEND'] = "code/frontend"
+    config['AWS_CREDENTIALS'] = 'aws-credentials-jenkins'
 
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
@@ -25,7 +26,7 @@ def call(body) {
             vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
             vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
             vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.DEPLOY_JOB,
-            vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
+            vAWS_CREDENTIALS_ID = env.AWS_CREDENTIALS == null ? config['AWS_CREDENTIALS'] : env.AWS_CREDENTIALS
 
 
 
