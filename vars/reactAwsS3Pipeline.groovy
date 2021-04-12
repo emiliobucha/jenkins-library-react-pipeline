@@ -24,7 +24,7 @@ def call(body) {
             vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
             vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
             vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
-            vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.SOURCE_FRONTEND,
+            vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.DEPLOY_JOB,
             vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
 
 
