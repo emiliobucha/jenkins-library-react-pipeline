@@ -59,6 +59,7 @@ def call(body) {
                     checkout scm
                     script {
                         WS_PATH = "${WORKSPACE}"
+                        echo "${WS_PATH}"
                         dir(params.SOURCE_FRONTEND) {
                             npmVersion()
                         }
@@ -110,7 +111,7 @@ def call(body) {
                         string(name: 'BUILD_FOLDER', value: params.BUILD_FOLDER),
                         string(name: 'S3_BUCKET', value: params.S3_BUCKET),
                         credentials(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS),
-                        WS_PATH(name:'WS_PATH', value: env.WORKSPACE)
+                        WS_PATH(name:'WS_PATH', value: )
                     ], wait: false
                 }
             }
