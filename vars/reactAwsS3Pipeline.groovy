@@ -27,7 +27,6 @@ def call(body) {
             vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.SOURCE_FRONTEND,
             vAWS_CREDENTIALS_ID = config['AWS_CREDENTIALS_ID'] == null ? 'aws-credentials-jenkins' : config['AWS_CREDENTIALS']
 
-    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: vAWS_CREDENTIALS_ID]]
 
 
     pipeline {
