@@ -17,6 +17,7 @@ pipeline {
         credentials(defaultValue: awsCredentialsId, description: 'AWS credentials', name: 'AWS_CREDENTIALS')
     }
     stages{
+
         stage('Initialize AWS Credentials'){
             steps {
                 script {
@@ -27,7 +28,20 @@ pipeline {
         stage('Deploy Artifact to S3 Bucket') {
                 steps {
                     script{
-                        awsS3Upload.uploadFolder(params.BUILD_FOLDER, params.S3_BUCKET, params.AWS_CREDENTIALS, params.AWS_REGION)
+                        // awsS3Upload.uploadFolder(params.BUILD_FOLDER, params.S3_BUCKET, params.AWS_CREDENTIALS, params.AWS_REGION)
+                        input "Deploy Artifact folder ${params.BUILD_FOLDER} to S3 Bucket ${params.S3_BUCKET}?"
+                        println s3Artifact
+                        withAWS(credentials: "${awsCredentials}", region: "${params.AWS_REGION}") {
+                            dir("${params.BUILD_FOLDER}") {
+                                script {
+                                    files = findFiles(glob: '**')
+                                    files.each { 
+                                        println "File:  ${it}"
+                                        s3Upload(file:"${it}", bucket:"${params.S3_BUCKET}", path:"${it}")
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
