@@ -21,8 +21,8 @@ def call(body) {
         vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION,
         vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
         vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
-        vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND
-
+        vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
+        vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.SOURCE_FRONTEND,
         vAWS_CREDENTIALS = config['AWS_CREDENTIALS'] == null ? awsCredentials : config['AWS_CREDENTIALS']
 
     body.resolveStrategy = Closure.DELEGATE_FIRST
