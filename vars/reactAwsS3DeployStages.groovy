@@ -22,9 +22,9 @@ pipeline {
                 steps {
                     script{
                         // awsS3Upload.uploadFolder(params.BUILD_FOLDER, params.S3_BUCKET, params.AWS_CREDENTIALS, params.AWS_REGION)
-                        def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
+                        //def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
                         input "Deploy Artifact folder ${params.BUILD_FOLDER} to S3 Bucket ${params.S3_BUCKET}?"
-                        withAWS(credentials: "${awsCredentials}", region: "${params.AWS_REGION}") {
+                        withAWS(credentials: "${params.AWS_CREDENTIALS}", region: "${params.AWS_REGION}") {
                             dir("${params.BUILD_FOLDER}") {
                                 script {
                                     files = findFiles(glob: '**')
