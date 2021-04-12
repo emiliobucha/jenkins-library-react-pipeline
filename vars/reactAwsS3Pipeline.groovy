@@ -109,7 +109,8 @@ def call(body) {
                         string(name: 'AWS_REGION', value: params.AWS_REGION),
                         string(name: 'BUILD_FOLDER', value: params.BUILD_FOLDER),
                         string(name: 'S3_BUCKET', value: params.S3_BUCKET),
-                        credentials(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS)
+                        credentials(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS),
+                        WS_PATH(name:'WS_PATH', value: env.WORKSPACE)
                     ], wait: false
                 }
             }
