@@ -1,44 +1,45 @@
+#!/usr/bin/env groovy
+
 def call(config) {
 
-    stage('Upload Artifact to S3 Bucket') {
-        steps {
-            input "Upload Artifact ${config.artifact} to S3 Bucket ${config.s3Artifact}?"
-            println artifact
-            println s3Artifact
-            withAWS(credentials: "${config.awsCredentials}", region: "${config.awsRegion}") {
-                s3Upload(file:"${config.artifact}", bucket:"${config.s3Artifact}", path:"${config.artifact}")
-            }
+    def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials-jenkins']]
+    pipeline {
+        agent any
+        
+        options {
+            timeout(time: 1, unit: 'HOURS')
+            disableConcurrentBuilds()
+            parallelsAlwaysFailFast()
+            timestamps()
         }
-    }
-    stage('Deploy Artifact to S3 Bucket') {
-        steps {
-            input "Deploy Artifact ${config.artifact} to S3 Bucket ${config.s3Artifact}?"
-            println artifact
-            println s3Artifact
-            withAWS(credentials: "${config.awsCredentials}", region: "${config.awsRegion}") {
-                dir("build") {
-                    script {
-                        files = findFiles(glob: '**')
-                        files.each { 
-                            println "File:  ${it}"
-                            s3Upload(file:"${it}", bucket:"${config.s3Artifact}", path:"${it}")
+
+        parameters {
+            string(defaultValue: 'build', description: 'Static website folder', name: 'BUILD_FOLDER')
+            string(defaultValue: '', description: 'Website S3 Bucket.', name: 'S3_BUCKET')
+            string(defaultValue: 'us-east-1', description: 'AWS region for the pipeline.', name: 'AWS_REGION')
+            string(defaultValue: awsCredentials, description: 'AWS credentials.', name: 'AWS_CREDENTIALS')
+        }
+        stages{
+            stage('Deploy Artifact to S3 Bucket') {
+                    steps {
+                        script{
+                            awsS3Upload.uploadFolder(params.BUILD_FOLDER, params.S3_BUCKET, params.AWS_CREDENTIALS, params.AWS_REGION)
                         }
                     }
                 }
-            }
-        }
-    }
-    stage('Check Application is Up and Running') {
-        steps {
-            echo "Check webpage is deployed"
-            timeout(300) {
-                waitUntil {
-                    script {
-                        def r = sh script: "curl -s http://${config.s3Artifact}.s3-website-${config.awsRegion}.amazonaws.com/", returnStatus: true
-                        return (r == 0);
+            stage('Check Application is Up and Running') {
+                steps {
+                    echo "Check webpage is deployed"
+                    timeout(300) {
+                        waitUntil {
+                            script {
+                                def r = sh script: "curl -s http://${params.S3_BUCKET}.s3-website-${params.AWS_REGION}.amazonaws.com/", returnStatus: true
+                                return (r == 0);
+                            }
+                        }
                     }
                 }
-            }
+            } 
         }
-    } 
+    }
 }
