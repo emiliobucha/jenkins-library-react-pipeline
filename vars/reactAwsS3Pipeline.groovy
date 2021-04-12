@@ -18,10 +18,10 @@ def call(body) {
         vPIPELINE_LIBRARY_REPOSITORY = env.PIPELINE_LIBRARY_REPOSITORY == null ? config['PIPELINE_LIBRARY_REPOSITORY'] : env.PIPELINE_LIBRARY_REPOSITORY,
         vNPM_CMD = env.NPM_CMD == null ? config['NPM_CMD'] : env.NPM_CMD,
         vENVIRONMENT = env.ENVIRONMENT == null ? config['ENVIRONMENT'] : env.ENVIRONMENT,
-        vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION
-        vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET
-        vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER
-        vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND,
+        vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION,
+        vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
+        vBUILD_FOLDER =  env.BUILD_FOLDER == null ? config['BUILD_FOLDER'] : env.BUILD_FOLDER,
+        vSOURCE_FRONTEND = env.SOURCE_FRONTEND == null ? config['SOURCE_FRONTEND'] : env.SOURCE_FRONTEND
 
         vAWS_CREDENTIALS = config['AWS_CREDENTIALS'] == null ? awsCredentials : config['AWS_CREDENTIALS']
 
