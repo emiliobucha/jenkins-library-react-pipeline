@@ -28,7 +28,7 @@ def call(body) {
             vDEPLOY_JOB = env.DEPLOY_JOB == null ? config['DEPLOY_JOB'] : env.DEPLOY_JOB,
             vAWS_CREDENTIALS_ID = env.AWS_CREDENTIALS == null ? config['AWS_CREDENTIALS'] : env.AWS_CREDENTIALS
 
-
+    def WS_PATH = ''
 
     pipeline {
         agent any
@@ -58,9 +58,11 @@ def call(body) {
                     // git credentialsId: 'dc69dd47-d601-4cb0-adbe-548c17e15506', url: "http://<gitRepo>/<username>/<repoName>.git"
                     checkout scm
                     script {
+                        WS_PATH = "${WORKSPACE}"
                         dir(params.SOURCE_FRONTEND) {
                             npmVersion()
                         }
+                        
                     }
                 }
             }

@@ -8,6 +8,7 @@ pipeline {
         disableConcurrentBuilds()
         parallelsAlwaysFailFast()
         timestamps()
+        
     }
 
     parameters {
@@ -15,22 +16,25 @@ pipeline {
         string(defaultValue: '', description: 'Website S3 Bucket.', name: 'S3_BUCKET')
         string(defaultValue: 'us-east-1', description: 'AWS region for the pipeline.', name: 'AWS_REGION')
         credentials(defaultValue: awsCredentialsId, description: 'AWS credentials', name: 'AWS_CREDENTIALS')
+        ws(defaultValue: '', description: 'Builds workspace', name: 'WS_PATH')
     }
     stages{
 
         stage('Deploy Artifact to S3 Bucket') {
                 steps {
                     script{
+                        ws(params.WS_PATH){
                         // awsS3Upload.uploadFolder(params.BUILD_FOLDER, params.S3_BUCKET, params.AWS_CREDENTIALS, params.AWS_REGION)
                         //def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: params.AWS_CREDENTIALS]]
-                        input "Deploy Artifact folder ${params.BUILD_FOLDER} to S3 Bucket ${params.S3_BUCKET}?"
-                        withAWS(credentials: "${params.AWS_CREDENTIALS}", region: "${params.AWS_REGION}") {
-                            dir("${params.BUILD_FOLDER}") {
-                                script {
-                                    files = findFiles(glob: '**')
-                                    files.each { 
-                                        println "File:  ${it}"
-                                        s3Upload(file:"${it}", bucket:"${params.S3_BUCKET}", path:"${it}")
+                            input "Deploy Artifact folder ${params.BUILD_FOLDER} to S3 Bucket ${params.S3_BUCKET}?"
+                            withAWS(credentials: "${params.AWS_CREDENTIALS}", region: "${params.AWS_REGION}") {
+                                dir("${params.BUILD_FOLDER}") {
+                                    script {
+                                        files = findFiles(glob: '**')
+                                        files.each { 
+                                            println "File:  ${it}"
+                                            s3Upload(file:"${it}", bucket:"${params.S3_BUCKET}", path:"${it}")
+                                        }
                                     }
                                 }
                             }
