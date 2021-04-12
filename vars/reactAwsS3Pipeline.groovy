@@ -106,7 +106,7 @@ def call(body) {
                         string(name: 'AWS_REGION', value: params.AWS_REGION),
                         string(name: 'BUILD_FOLDER', value: params.BUILD_FOLDER),
                         string(name: 'S3_BUCKET', value: params.S3_BUCKET),
-                        string(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS_ID)
+                        credentials(name: 'AWS_CREDENTIALS', value: params.AWS_CREDENTIALS_ID)
                     ], wait: false
                 }
             }
