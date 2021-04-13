@@ -6,7 +6,7 @@ def call(body) {
     def config = [:]
     config['GIT_CREDENTIALS'] = 'gitlab-semperti-gonzalo-acosta'
     config['PIPELINE_LIBRARY_REPOSITORY'] = 'https://gitlab.semperti.com/devops/jenkins-library.git'
-    //config['NPM_CMD'] = "npm"
+    config['NPM_CMD'] = "npm"
     config['ENVIRONMENT'] = "development"
     config['AWS_REGION'] = "us-east-1"
     config['S3_BUCKET'] = "semperti-react-development-rapientrega"
@@ -20,7 +20,7 @@ def call(body) {
 
     def vGIT_CREDENTIALS = env.GIT_CREDENTIALS == null ? config['GIT_CREDENTIALS'] : env.GIT_CREDENTIALS,
             vPIPELINE_LIBRARY_REPOSITORY = env.PIPELINE_LIBRARY_REPOSITORY == null ? config['PIPELINE_LIBRARY_REPOSITORY'] : env.PIPELINE_LIBRARY_REPOSITORY,
-            //vNPM_CMD = env.NPM_CMD == null ? config['NPM_CMD'] : env.NPM_CMD,
+            vNPM_CMD = env.NPM_CMD == null ? config['NPM_CMD'] : env.NPM_CMD,
             vENVIRONMENT = env.ENVIRONMENT == null ? config['ENVIRONMENT'] : env.ENVIRONMENT,
             vAWS_REGION = env.AWS_REGION == null ? config['AWS_REGION'] : env.AWS_REGION,
             vS3_BUCKET = env.S3_BUCKET == null ? config['S3_BUCKET'] : env.S3_BUCKET,
@@ -44,7 +44,7 @@ def call(body) {
         parameters {
             credentials( name: 'GIT_CREDENTIALS',  defaultValue: vGIT_CREDENTIALS, description: 'Credenciales para acceder a los repositorios.' )
             string(name: 'PIPELINE_LIBRARY_REPOSITORY', defaultValue: vPIPELINE_LIBRARY_REPOSITORY, description: 'Repositorio con librerias groovy.')
-            //string(name: 'NPM_CMD', defaultValue: vNPM_CMD, description: 'Comando NPM')
+            string(name: 'NPM_CMD', defaultValue: vNPM_CMD, description: 'Comando NPM')
             string(name: 'S3_BUCKET', defaultValue: vS3_BUCKET, description: 'Bucket S3 de publicación')
             string(name: 'BUILD_FOLDER', defaultValue: vBUILD_FOLDER, description: 'Path relativo a la carpeta de compilación a publicar')
             string(name: 'AWS_REGION', defaultValue: vAWS_REGION, description: 'AWS Region')
@@ -63,6 +63,7 @@ def call(body) {
                             def packageJSON = readJSON file: 'package.json'
                             def packageJSONVersion = packageJSON.version
                             echo packageJSONVersion
+                            echo env.BRANCH_NAME
                         }
                         
                     }
